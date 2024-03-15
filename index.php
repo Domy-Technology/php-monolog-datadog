@@ -22,6 +22,9 @@ set_exception_handler(function ($e) {
     $uncaught_log = new Logger('uncaught');
     $uncaught_logstream = new StreamHandler('php://stdout', Logger::ERROR);
     $uncaught_logstream->setFormatter(new JsonFormatter());
+    $uncaught_log->pushProcessor(new \Monolog\Processor\ProcessIdProcessor());
+    $uncaught_log->pushProcessor(new \Monolog\Processor\GitProcessor());
+    $uncaught_log->pushProcessor(new \Monolog\Processor\MemoryUsageProcessor());
     $uncaught_log->pushHandler($uncaught_logstream);
     $uncaught_log->error("Exceções não tratadas", ['exception' => $e]);
 });
